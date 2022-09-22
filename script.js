@@ -6,7 +6,7 @@ const player = (letter, name=letter) => {
 };
 
 const gameBoard = (()=>{
-
+    let botActive = false;
     let xmove = true;
     let player1 = player('x');
     let player2 = player('o');
@@ -25,15 +25,21 @@ const gameBoard = (()=>{
             let btn = document.querySelector('.playagain');
             btn.style.display = "inline";
             btn.addEventListener('click', () => {
-                reset(btn);
+                reset();
             });
         }
     };
 
-    let reset = (btn) => {
+    let toggleBot = () => {
+        reset();
+        botActive = !botActive;
+        botbtn.classList.toggle("greenbot");
+    }
+
+    let reset = () => {
         board = {"space1":"", "space2":"", "space3":"", "space4":"", "space5":"", "space6":"", "space7":"", "space8":"", "space9":""};
         xmove = true;
-        btn.style.display = "none";
+        document.querySelector('.playagain').style.display = "none";
         refresh();
     }
 
@@ -81,21 +87,35 @@ const gameBoard = (()=>{
     let move = (targetid) => {
         if (board[targetid] === "") {
             if (xmove) {
-                console.log('x');
                 board[targetid] = 'x';
             }
             else {
-                console.log('o');
                 board[targetid] = 'o';
             }
-            xmove = !xmove;
+            xmove = !xmove; 
+            bot(botActive);
         } else {
             console.log('already occupied')
         }
+;
         refresh();
+
     }
 
-    return {board, move, refresh};
+    let bot = (botActive) => {
+        if (botActive) {
+            if (!xmove) {
+                //identifies and picks a random valid space for computer move.
+                let validspaces = []
+                for (space in board) {
+                    if (board[space] == "") {
+                        validspaces.push(space);
+                    }
+                };
+                move(validspaces.at(Math.floor(Math.random() * validspaces.length)));
+        }}}
+
+    return {board, move, refresh, toggleBot};
 })();
 
 
@@ -108,3 +128,7 @@ lis.forEach((li) => {
 
 const resetbtn = document.querySelector('button');
 
+const botbtn = document.querySelector('.bot')
+botbtn.addEventListener('click', () => {
+    gameBoard.toggleBot();
+})
