@@ -3,6 +3,8 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    gap: 25px;
+    font-family: "Roboto", sans-serif;
 }
 
 .header {
@@ -10,7 +12,22 @@ body {
     text-align: center;
     font-size: 48px;
     font-weight: bold;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 15px;
+}
 
+.gamestatus {
+    align-self: end;
+}
+
+.playagain {
+    display: none;
+}
+
+.material-symbols-outlined {
+    font-size: 64px !important;
+    color: blue;
 }
 
 .board {
